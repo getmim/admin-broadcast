@@ -2,7 +2,7 @@
 
 return [
     '__name' => 'admin-broadcast',
-    '__version' => '0.0.2',
+    '__version' => '0.0.3',
     '__git' => 'git@github.com:getmim/admin-broadcast.git',
     '__license' => 'MIT',
     '__author' => [
@@ -148,19 +148,19 @@ return [
                     'children' => [
                         'all-cast' => [
                             'label' => 'All Cast',
-                            'icon'  => '<i class="fas fa-broadcast-tower"></i>',
+                            'icon'  => '<i></i>',
                             'route' => ['adminBroadcast'],
                             'perms' => 'manage_broadcast'
                         ],
                         'contact' => [
                             'label' => 'Contact',
-                            'icon'  => '<i class="fas fa-id-card-alt"></i>',
+                            'icon'  => '<i></i>',
                             'route' => ['adminBroadcastContact'],
                             'perms' => 'manage_broadcast_contact'
                         ],
                         'contact-group' => [
                             'label' => 'Contact Group',
-                            'icon'  => '<i class="fas fa-users"></i>',
+                            'icon'  => '<i></i>',
                             'route' => ['adminBroadcastGroup'],
                             'perms' => 'manage_broadcast_contact_group'
                         ]
