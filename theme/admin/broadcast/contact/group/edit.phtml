@@ -1,0 +1,31 @@
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white navbar-shadow">
+    <div class="navbar-multiline mr-auto">
+        <span class="navbar-brand" href="#0">Broadcast Contact Group Editor</span>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="<?= $this->router->to('adminHome') ?>">Home</a></li>
+                <li class="breadcrumb-item"><a href="<?= $this->router->to('adminBroadcast') ?>">Broadcast</a></li>
+                <li class="breadcrumb-item"><a href="<?= $this->router->to('adminBroadcastContact') ?>">Contact</a></li>
+                <li class="breadcrumb-item"><a href="<?= $this->router->to('adminBroadcastGroup') ?>">Group</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><?= $subtitle ?></li>
+            </ol>
+        </nav>
+    </div>
+</nav>
+
+<div class="container p-3">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <form method="POST" class="card-body needs-validation main" novalidate>
+                    <?= $form->csrfField('noob') ?>
+                    <?= $form->field('name'); ?>
+                    <div class="text-right">
+                        <button class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

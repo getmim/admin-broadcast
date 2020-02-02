@@ -1,0 +1,45 @@
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white navbar-shadow">
+    <div class="navbar-multiline mr-auto">
+        <span class="navbar-brand" href="#0">Broadcast Editor</span>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="<?= $this->router->to('adminHome') ?>">Home</a></li>
+                <li class="breadcrumb-item"><a href="<?= $this->router->to('adminBroadcast') ?>">Broadcast</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><?= $subtitle ?></li>
+            </ol>
+        </nav>
+    </div>
+</nav>
+
+<div class="container p-3">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" class="row needs-validation main" novalidate>
+                        <div class="col-md-6">
+                            <?= $form->csrfField('noob') ?>
+                            <?= $form->field('text'); ?>
+                        </div>
+                        <div class="col-md-6">
+                            <?= $form->field('target', $groups); ?>
+                            <?= $form->field('time') ?>
+                            <div class="text-right">
+                                <button class="btn btn-primary">Send</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <hr>
+                            <small>
+                                Please note that the broadcast object is not editable after made. Please make sure every properties are correct before pressing the <code>[Send]</code> button.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

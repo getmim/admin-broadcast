@@ -1,0 +1,93 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white navbar-shadow">
+    <div class="navbar-multiline mr-auto">
+        <span class="navbar-brand" href="#0">Broadcast Editor</span>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="<?= $this->router->to('adminHome') ?>">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Broadcast</li>
+            </ol>
+        </nav>
+    </div>
+    <a href="<?= $this->router->to('adminBroadcastEdit', ['id'=>0]) ?>" class="btn btn-primary">Create New</a>
+</nav>
+
+<div class="container p-3">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card mb-3">
+                <form method="GET" class="card-body">
+                    <h5 class="card-title">Search</h5>
+                    <?= $form->field('q') ?>
+                    <?= $form->field('status') ?>
+                    <div class="text-right">
+                        <button class="btn btn-primary">Find</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div>Total item: <?= number_format($total); ?></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <?php if($broadcast): ?>
+                <?php $csrf = $form->csrfToken(); ?>
+                <ul class="list-group list-group-flush card mb-3">
+                    <?php foreach($broadcast as $bdcast): ?>
+                        <li class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">
+                                    <?= $bdcast->text->safe->chars(50) ?>...
+                                </h5>
+                                <div>
+                                    <small><?= $bdcast->status ?></small>
+                                    <div class="btn-group btn-group-sm" role="group" aria-label="Action">
+                                        <a href="<?= $this->router->to('adminBroadcastItem', ['id'=>$bdcast->id]) ?>" class="btn btn-secondary" title="Details">
+                                            <i class="fas fa-info-circle"></i>
+                                        </a>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <button id="bdcast-action-<?= $bdcast->id ?>" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                            <div class="dropdown-menu" aria-labelledby="bdcast-action-<?= $bdcast->id ?>">
+                                                <a class="dropdown-item"
+                                                    data-toggle="confirm"
+                                                    data-text="Are you sure want to remove this item?"
+                                                    data-btn-type="danger"
+                                                    href="<?= $this->router->to('adminBroadcastRemove', ['id'=>$bdcast->id], ['noob'=>$csrf]) ?>">Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <small>
+                                <span title="Created">
+                                    <i class="far fa-calendar-plus"></i>
+                                    <?= $bdcast->created->format('M d, Y H:i') ?>
+                                </span>
+                                &middot;
+                                <span title="Time">
+                                    <i class="fas fa-stopwatch"></i>
+                                    <?= $bdcast->time->format('M d, Y H:i') ?>
+                                </span>
+                                &middot;
+                                <span title="Creator">
+                                    <i class="fas fa-user"></i>
+                                    <?= $bdcast->user->fullname->safe ?>
+                                </span>
+                                &middot;
+                                <span title="Target Group">
+                                    <i class="fas fa-users"></i>
+                                    <?= $bdcast->target->name->safe ?>
+                                </span>
+                            </small>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
+
+            <?php if($pages): ?>
+                <?= $this->partial('shared/pagination', ['pages'=>$pages, 'align'=>'right']); ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>

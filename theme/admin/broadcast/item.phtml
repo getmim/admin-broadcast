@@ -1,0 +1,99 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white navbar-shadow">
+    <div class="navbar-multiline mr-auto">
+        <span class="navbar-brand" href="#0">Broadcast Editor</span>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="<?= $this->router->to('adminHome') ?>">Home</a></li>
+                <li class="breadcrumb-item"><a href="<?= $this->router->to('adminBroadcast') ?>">Broadcast</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Contact</li>
+            </ol>
+        </nav>
+    </div>
+</nav>
+
+<div class="container p-3">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <code><?= $broadcast->text->safe ?></code>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <dl>
+                        <dt>Creator</dt>
+                        <dd><?= $broadcast->user->fullname ?></dd>
+                        <dt>Created At</dt>
+                        <dd><?= $broadcast->created->format('M d, Y H:i') ?></dd>
+                        <dt>Group Target</dt>
+                        <dd><?= $broadcast->target->name->safe ?></dd>
+                        <dt>Status</dt>
+                        <dd><?= $broadcast->status ?></dd>
+                        <dt>Time</dt>
+                        <dd><?= $broadcast->time->format('M d, Y H:i') ?></dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div>Total item: <?= number_format($total); ?></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <?php
+                        $total    = $broadcast->total->value;
+                        $sent     = $broadcast->sent->value;
+                        $fail     = $broadcast->fail->value;
+                        $sent_len = round( $sent / $total * 100 );
+                        $fail_len = round( $fail / $total * 100 );
+                    ?>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width:<?= $sent_len ?>%" aria-valuenow="<?= $sent ?>" aria-valuemin="0" aria-valuemax="<?= $total ?>"></div>
+                        <div class="progress-bar bg-danger" role="progressbar" style="width:<?= $fail_len ?>%" aria-valuenow="<?= $fail ?>" aria-valuemin="0" aria-valuemax="<?= $total ?>"></div>
+                    </div>
+                    <small class="float-right">
+                        <span title="Success"><?= $broadcast->sent->format() ?></span> / 
+                        <span title="Fail"><?= $broadcast->fail->format() ?></span> /
+                        <span title="Total"><?= $broadcast->total->format() ?></span>
+                    </small>
+                </div>
+            </div>
+            <?php if($items): ?>
+                <ul class="list-group list-group-flush card mb-3">
+                    <?php foreach($items as $item): ?>
+                        <li class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">
+                                    <?= $item->contact->name->safe ?>
+                                </h5>
+                                <div>
+                                    <small><?= $item->status ?></small>
+                                </div>
+                            </div>
+                            <small>
+                                <span title="Phone">
+                                    <i class="fas fa-phone-square"></i>
+                                    <?= $item->contact->phone ?>
+                                </span>
+                                <?php if($item->status->value == 1): ?>
+                                    &middot;
+                                    <span class="text-danger">
+                                        <?= $item->reason->safe ?>
+                                    </span>
+                                <?php endif; ?>
+                            </small>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
+
+            <?php if($pages): ?>
+                <?= $this->partial('shared/pagination', ['pages'=>$pages, 'align'=>'right']); ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
