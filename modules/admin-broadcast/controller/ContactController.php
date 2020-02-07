@@ -50,10 +50,8 @@ class ContactController extends \Admin\Controller
         $chain  = new Chain('broadcast-contact', $contact, ['group'], $id);
         $form   = new Form('admin-broadcast-contact.edit');
 
-        $params['form'] = $form;
-
-        $groups = BCGroup::get([], 0, 1, ['name'=>true]) ?? [];
-        $params['groups'] = array_column($groups, 'name', 'id');
+        $params['form']   = $form;
+        $params['groups'] = $chain->getOptions('group', 'name', 'all');
 
         if(!($valid = $form->validate($contact)) || !$form->csrfTest('noob'))
             return $this->resp('broadcast/contact/edit', $params);
