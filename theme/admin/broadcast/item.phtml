@@ -5,7 +5,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="<?= $this->router->to('adminHome') ?>">Home</a></li>
                 <li class="breadcrumb-item"><a href="<?= $this->router->to('adminBroadcast') ?>">Broadcast</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Contact</li>
+                <li class="breadcrumb-item active" aria-current="page">Items</li>
             </ol>
         </nav>
     </div>
@@ -26,8 +26,10 @@
                         <dd><?= $broadcast->user->fullname ?></dd>
                         <dt>Created At</dt>
                         <dd><?= $broadcast->created->format('M d, Y H:i') ?></dd>
-                        <dt>Group Target</dt>
-                        <dd><?= $broadcast->target->name->safe ?></dd>
+                        <?php if($broadcast->target): ?>
+                            <dt>Group Target</dt>
+                            <dd><?= $broadcast->target->name->safe ?></dd>
+                        <?php endif; ?>
                         <dt>Status</dt>
                         <dd><?= $broadcast->status ?></dd>
                         <dt>Time</dt>
@@ -77,7 +79,11 @@
                             <small>
                                 <span title="Phone">
                                     <i class="fas fa-phone-square"></i>
-                                    <?= $item->contact->phone ?>
+                                    <?php if(false !== strstr($item->contact->phone, '#')): ?>
+                                        <?= explode('#', $item->contact->phone)[1] ?>
+                                    <?php else: ?>
+                                        <?= $item->contact->phone ?>
+                                    <?php endif; ?>
                                 </span>
                                 <?php if($item->status->value == 1): ?>
                                     &middot;

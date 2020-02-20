@@ -9,8 +9,8 @@ namespace AdminBroadcast\Controller;
 
 use LibFormatter\Library\Formatter;
 use LibForm\Library\Form;
+use LibForm\Library\Combiner;
 use LibPagination\Library\Paginator;
-use LibChain\Library\Chain;
 use Broadcast\Model\{
     BroadcastContact as BContact,
     BroadcastContactGroup as BCGroup
@@ -47,16 +47,21 @@ class ContactController extends \Admin\Controller
             $params = $this->getParams('Create New Broadcast Contact');
         }
 
-        $chain  = new Chain('broadcast-contact', $contact, ['group'], $id);
-        $form   = new Form('admin-broadcast-contact.edit');
+        $c_opts = [
+            'group' => [null, null, 'format', 'all', 'name']
+        ];
+        $combiner = new Combiner($id, $c_opts, 'broadcast-contact');
+        $contact  = $combiner->prepare($contact);
 
+        $params['opts'] = $combiner->getOptions();
+
+        $form   = new Form('admin-broadcast-contact.edit');
         $params['form']   = $form;
-        $params['groups'] = $chain->getOptions('group', 'name', 'all');
 
         if(!($valid = $form->validate($contact)) || !$form->csrfTest('noob'))
             return $this->resp('broadcast/contact/edit', $params);
 
-        $chain->detach($valid);
+        $valid = $combiner->finalize($valid);
 
         if($id){
             if(!BContact::set((array)$valid, ['id'=>$id]))
@@ -67,8 +72,7 @@ class ContactController extends \Admin\Controller
                 deb(BContact::lastError());
         }
 
-        $chain->create($id, $this->user->id);
-        $chain->attach($valid);
+        $combiner->save($id, $this->user->id);
 
         // add the log
         $this->addLog([

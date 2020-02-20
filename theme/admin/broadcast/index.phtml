@@ -74,11 +74,13 @@
                                     <i class="fas fa-user"></i>
                                     <?= $bdcast->user->fullname->safe ?>
                                 </span>
-                                &middot;
-                                <span title="Target Group">
-                                    <i class="fas fa-users"></i>
-                                    <?= $bdcast->target->name->safe ?>
-                                </span>
+                                <?php if($bdcast->target): ?>
+                                    &middot;
+                                    <span title="Target Group">
+                                        <i class="fas fa-users"></i>
+                                        <?= $bdcast->target->name->safe ?>
+                                    </span>
+                                <?php endif; ?>
                             </small>
                         </li>
                     <?php endforeach; ?>
