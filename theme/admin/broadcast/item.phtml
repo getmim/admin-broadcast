@@ -50,17 +50,19 @@
                         $total    = $broadcast->total->value;
                         $sent     = $broadcast->sent->value;
                         $fail     = $broadcast->fail->value;
-                        $sent_len = round( $sent / $total * 100 );
-                        $fail_len = round( $fail / $total * 100 );
+                        $sent_len = $total ? round( $sent / $total * 100 ) : 0;
+                        $fail_len = $total ? round( $fail / $total * 100 ) : 0;
                     ?>
                     <div class="progress">
                         <div class="progress-bar" role="progressbar" style="width:<?= $sent_len ?>%" aria-valuenow="<?= $sent ?>" aria-valuemin="0" aria-valuemax="<?= $total ?>"></div>
                         <div class="progress-bar bg-danger" role="progressbar" style="width:<?= $fail_len ?>%" aria-valuenow="<?= $fail ?>" aria-valuemin="0" aria-valuemax="<?= $total ?>"></div>
                     </div>
-                    <small class="float-right">
-                        <span title="Success"><?= $broadcast->sent->format() ?></span> / 
-                        <span title="Fail"><?= $broadcast->fail->format() ?></span> /
-                        <span title="Total"><?= $broadcast->total->format() ?></span>
+                    <small>
+                        <span title="Success" class="text-success">Success: <?= $broadcast->sent->format() ?></span>
+                        &middot;
+                        <span title="Failed" class="text-danger">Failed: <?= $broadcast->fail->format() ?></span>
+                        &middot;
+                        <span title="Total">Total: <?= $broadcast->total->format() ?></span>
                     </small>
                 </div>
             </div>
